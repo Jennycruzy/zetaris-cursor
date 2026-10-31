@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "zetaris": {
+      "command": "python3",
+      "args": ["zetaris_mcp.py"],
+      "env": {
+        "ZETARIS_ENV_FILE": ".env.local",
+        "ZETARIS_MCP_LOG": "zetaris-mcp.log",
+        "ZETARIS_TIMEOUT": "50"
+      }
+    }
+  }
+}

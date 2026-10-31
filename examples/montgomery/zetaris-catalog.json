@@ -1,0 +1,36 @@
+{
+  "MONTGOMERY_READY": [
+    {
+      "name": "tract_violations",
+      "about": "One row per Montgomery County census tract (71): geoid, tract_name, population, adults, code_violations_2025, violations_per_1000, adult_asthma_pct, high_bp_pct, diabetes_pct. About 20 s."
+    },
+    {
+      "name": "tract_311",
+      "about": "One row per Montgomery County census tract (71): geoid, tract_name, population, adults, requests_311_2025, requests_311_per_1000, adult_asthma_pct, high_bp_pct, diabetes_pct. About 25 s."
+    },
+    {
+      "name": "violations_in_tracts",
+      "about": "City of Montgomery code violations with Year = 2025 that have a location, each placed in its census tract: objectid, case_type, case_date, case_status, lon, lat, geoid."
+    },
+    {
+      "name": "requests_311_in_tracts",
+      "about": "City of Montgomery 311 service requests with Year = 2025 that fall inside a county census tract: objectid, request_type, department, created, lon, lat, geoid."
+    },
+    {
+      "name": "code_violations_2025",
+      "about": "All City of Montgomery code violations with Year = 2025 (15,439 rows, some without a location): objectid, case_type, case_date, case_status, zip, lon, lat."
+    },
+    {
+      "name": "requests_311_2025",
+      "about": "All City of Montgomery 311 service requests with Year = 2025 (27,817 rows): objectid, request_type, department, status, created, lon, lat."
+    },
+    {
+      "name": "census_tracts",
+      "about": "US Census TIGERweb tract boundaries for Montgomery County, AL: geoid, tract_name, area_land_m2, rings (polygon)."
+    },
+    {
+      "name": "tract_health",
+      "about": "CDC PLACES tract estimates for Montgomery County: geoid, population, adults, adult_asthma_pct, high_bp_pct, diabetes_pct."
+    }
+  ]
+}

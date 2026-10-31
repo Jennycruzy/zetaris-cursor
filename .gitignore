@@ -1,0 +1,7 @@
+.env.local
+.env
+zetaris-mcp.log
+__pycache__/
+*.egg-info/
+build/
+dist/

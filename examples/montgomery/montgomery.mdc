@@ -1,0 +1,14 @@
+---
+description: Montgomery, Alabama ready-made data in Zetaris
+alwaysApply: true
+---
+Ready data for Montgomery, Alabama (database `MONTGOMERY_READY`):
+- `montgomery_ready.tract_violations` and `montgomery_ready.tract_311`: one row per census tract with population, 2025 code violations (or 311 requests) as counts and per 1,000 residents, and CDC adult asthma, high blood pressure and diabetes rates. Join them on `geoid` only if you need both.
+- `montgomery_ready.violations_in_tracts` and `montgomery_ready.requests_311_in_tracts`: each 2025 record with its type, date and census tract `geoid`.
+- `montgomery_ready.code_violations_2025`, `montgomery_ready.requests_311_2025`: all 2025 records, including those without a location.
+- `montgomery_ready.census_tracts`, `montgomery_ready.tract_health`: tract names and boundaries; CDC health estimates.
+
+Placing any longitude/latitude points into Montgomery census tracts (all inside one Zetaris query):
+- `montgomery_ready.tract_bbox` (geoid, minx, maxx, miny, maxy) and `montgomery_ready.tract_edge_bands` (geoid, x1, y1, x2, y2, band) hold the tract boundaries. `band` is `CAST(floor(latitude * 500) AS int)`.
+- Pattern: keep points inside a tract's box (`lon BETWEEN minx AND maxx AND lat BETWEEN miny AND maxy`), join to `tract_edge_bands` on `geoid` and the point's band, count boundary crossings with `SUM(CASE WHEN ((y1 > lat) <> (y2 > lat)) AND lon < (x2 - x1) * (lat - y1) / (y2 - y1) + x1 THEN 1 ELSE 0 END)` grouped by point and `geoid`, and keep the rows where the count is odd (`pmod(crossings, 2) = 1`).
+- Filter big sources to the Montgomery area first (longitude -86.50 to -85.85, latitude 32.15 to 32.60).

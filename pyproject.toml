@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zetaris-mcp"
+version = "0.2.0"
+description = "Connect Cursor's agent (or any MCP client) to a live Zetaris instance."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+
+[project.scripts]
+zetaris-mcp = "zetaris_mcp:main"
+
+[tool.setuptools]
+py-modules = ["zetaris_mcp"]

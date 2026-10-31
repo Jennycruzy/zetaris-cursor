@@ -1,0 +1,14 @@
+---
+description: Use Zetaris for all data work
+alwaysApply: true
+---
+This project has a live Zetaris data platform connected through the `zetaris` MCP tools. Zetaris is the source of truth for data.
+
+- Get data through the Zetaris tools. Start with `list_databases`, then `list_tables` and `describe_table`, then `run_query`.
+- `list_tables` also returns `ready_views` for some databases. Use those first: they are already flattened and joined, so a query takes seconds. Query them as `DATABASE.view_name`.
+- If the data you need is not in Zetaris yet, register it with `register_source` (a `CREATE LIGHTNING ...` statement) and then query it. Do not download it with curl, Python or a browser instead.
+- You may read a source's web page or API docs to learn its address and fields, but the numbers in your answer must come from a Zetaris query.
+- Join sources inside one Zetaris query rather than fetching them separately and combining them yourself.
+- Keep queries light: filter, aggregate or use LIMIT. Each call has a time limit. If a call says it went past the limit, do not resend it; make the query lighter.
+- In every answer, show the Zetaris SQL that produced each figure, so it can be re-run.
+- If Zetaris cannot answer, say so and say why. Do not quietly fall back to another route.
