@@ -3,6 +3,7 @@ description: Montgomery, Alabama ready-made data in Zetaris
 alwaysApply: true
 ---
 Ready data for Montgomery, Alabama (database `MONTGOMERY_READY`):
+- "2025" in these views means calendar 2025, by each record's own date. The City's `Year` field is not the calendar year (late-year records are coded as the next year), so never filter City data on `Year`: use the record's date field (for example `CaseDate` or `Create_Date`).
 - `montgomery_ready.tract_violations` and `montgomery_ready.tract_311`: one row per census tract with population, 2025 code violations (or 311 requests) as counts and per 1,000 residents, and CDC adult asthma, high blood pressure and diabetes rates. Join them on `geoid` only if you need both.
 - `montgomery_ready.violations_in_tracts` and `montgomery_ready.requests_311_in_tracts`: each 2025 record with its type, date and census tract `geoid`.
 - `montgomery_ready.code_violations_2025`, `montgomery_ready.requests_311_2025`: all 2025 records, including those without a location.
@@ -12,3 +13,9 @@ Placing any longitude/latitude points into Montgomery census tracts (all inside 
 - `montgomery_ready.tract_bbox` (geoid, minx, maxx, miny, maxy) and `montgomery_ready.tract_edge_bands` (geoid, x1, y1, x2, y2, band) hold the tract boundaries. `band` is `CAST(floor(latitude * 500) AS int)`.
 - Pattern: keep points inside a tract's box (`lon BETWEEN minx AND maxx AND lat BETWEEN miny AND maxy`), join to `tract_edge_bands` on `geoid` and the point's band, count boundary crossings with `SUM(CASE WHEN ((y1 > lat) <> (y2 > lat)) AND lon < (x2 - x1) * (lat - y1) / (y2 - y1) + x1 THEN 1 ELSE 0 END)` grouped by point and `geoid`, and keep the rows where the count is odd (`pmod(crossings, 2) = 1`).
 - Filter big sources to the Montgomery area first (longitude -86.50 to -85.85, latitude 32.15 to 32.60).
+
+Adding a City of Montgomery layer (ArcGIS REST) that is not in Zetaris yet:
+- A query returns at most 2,000 records, so register one `CREATE LIGHTNING REST TABLE ... FROM MONTGOMERY_READY` per page (`resultOffset=0`, `2000`, `4000`, ...) until a page has fewer than 2,000, and combine the pages with `UNION ALL SELECT explode(features) AS f FROM ...` inside your query.
+- Ask for `returnGeometry=true&outSR=4326&orderByFields=OBJECTID&f=json` and a date filter such as `where=CaseDate >= DATE '2025-01-01' AND CaseDate < DATE '2026-01-01'` (URL-encoded). Read points as `f.geometry.x` (longitude) and `f.geometry.y` (latitude); fields as `f.attributes.<Field>`.
+- Use `returnCountOnly=true` first to know how many pages you need.
+
